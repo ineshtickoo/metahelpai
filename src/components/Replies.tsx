@@ -28,7 +28,7 @@ export const repliesAtom = atom<ReplyData[]>([
 
 function Replies() {
   const [replies] = useAtom(repliesAtom);
-
+  console.log("test1")
   return replies.length === 0
     ? (<></>)
     : (
@@ -41,6 +41,7 @@ function Replies() {
         border="2px solid"
         borderColor="brand.borderlight"
         bg="brand.bglight">
+          
         {replies.map((reply, i) => (
           <React.Fragment key={i}>
             <Reply {...reply} />

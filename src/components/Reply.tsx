@@ -4,7 +4,7 @@ import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'reac
 import type { ReplyData } from './Replies'
 import HTMLFlipBook from "react-pageflip";
 import { Sniglet } from '@next/font/google';
-
+import axios from 'axios';
 
 interface Page{
   text: string;
@@ -12,18 +12,15 @@ interface Page{
 
 }
 
-const pages = [{'sentence': 'I love the smell of coffee in the morning.', 'image': 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-0wQIDi3eJIe73MXnjXnoMAJo/user-eS3FMCemDaTv8zHmoJokZ7dz/img-QICNRrVF35xyCbutpY6JKnkz.png?st=2023-01-29T08%3A00%3A20Z&se=2023-01-29T10%3A00%3A20Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-28T23%3A35%3A07Z&ske=2023-01-29T23%3A35%3A07Z&sks=b&skv=2021-08-06&sig=IcUcemeBSPZZsF9hYc8JkITyLYDHsIvFd9WZKFS9Cqk%3D'}, {'sentence': "It's my favorite part of the day.", 'image': 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-0wQIDi3eJIe73MXnjXnoMAJo/user-eS3FMCemDaTv8zHmoJokZ7dz/img-7W55qXYJpZ2sfGjS8QARcqt2.png?st=2023-01-29T08%3A00%3A26Z&se=2023-01-29T10%3A00%3A26Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-28T23%3A36%3A26Z&ske=2023-01-29T23%3A36%3A26Z&sks=b&skv=2021-08-06&sig=45gelSRJ36Gu4NzPz/iVhBElQ/rGkaMh0TFvw7IPuVk%3D'}, {'sentence': 'Every morning I make a cup, sit down, and take a moment to appreciate the aroma and flavor of the perfect cup of coffee.', 'image': 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-0wQIDi3eJIe73MXnjXnoMAJo/user-eS3FMCemDaTv8zHmoJokZ7dz/img-UGjoxiSkD3aAX76uXyylwv4A.png?st=2023-01-29T08%3A00%3A31Z&se=2023-01-29T10%3A00%3A31Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-28T23%3A35%3A24Z&ske=2023-01-29T23%3A35%3A24Z&sks=b&skv=2021-08-06&sig=ATfrJ9ubWg0BD8JEF05S8hNlG1vzq5KrJODslDCfo60%3D'}, {'sentence': "It's my little ritual that I look forward to every day.", 'image': 'https://oaidalleapiprodscus.blob.core.windows.net/private/org-0wQIDi3eJIe73MXnjXnoMAJo/user-eS3FMCemDaTv8zHmoJokZ7dz/img-rBSC6cMLiVJjqb8di4Gs5VX3.png?st=2023-01-29T08%3A00%3A37Z&se=2023-01-29T10%3A00%3A37Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-28T23%3A36%3A48Z&ske=2023-01-29T23%3A36%3A48Z&sks=b&skv=2021-08-06&sig=6%2BPWbBvAAi%2BDe2VKjp1BNNvcITJbAv/a0FF%2BFzRCMYw%3D'}]
-
-
 interface MyBookProps{
   pages: Page;
 }
 
 
-const Reply: React.FC<ReplyData> = ({ prompt, reply, images }) => {
+const Reply: React.FC<ReplyData> = ({prompt, reply, images }) => {
   const [liked, setLiked] = React.useState(false);
   const [disliked, setDisliked] = React.useState(false);
-
+  // const [pages, setPages] = React.useState([{'sentence': '', "image": ''}]);
   const like = () => {
     setLiked(true)
     setDisliked(false)
@@ -38,6 +35,36 @@ const Reply: React.FC<ReplyData> = ({ prompt, reply, images }) => {
     setLiked(false)
     setDisliked(true)
   }
+  const pages = [
+    {
+        "image": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-jQc5qwHq4jpEbvTYWCR20ewR/user-AhSTpHqXPQSfa1zOeefgJRZM/img-joiGI07flksecyKJRcS4izTt.png?st=2023-01-29T15%3A25%3A12Z&se=2023-01-29T17%3A25%3A12Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-01-29T16%3A25%3A12Z&ske=2023-01-30T16%3A25%3A12Z&sks=b&skv=2021-08-06&sig=Sjpe7BQliMKMKIFucwoExFHar7e8GCwmhE5pPccmN6E%3D",
+        "sentence": "Once there was a dog named Rex."
+    },
+    {
+        "image": "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
+        "sentence": "He loved to go for long walks and play fetch with his owners."
+    },
+    {
+        "image": "https://www.princeton.edu/sites/default/files/styles/half_2x/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=iQEwihUn",
+        "sentence": "He was always so happy and full of energy."
+    },
+    {
+        "image": "https://static01.nyt.com/images/2022/05/10/science/28DOGS-BEHAVIOR1/28DOGS-BEHAVIOR1-mobileMasterAt3x.jpg",
+        "sentence": "One day, Rex got lost and his owners searched everywhere for him."
+    },
+    {
+        "image": "https://i.natgeofe.com/n/187b3223-0b45-4aa5-ae5c-24793dd2d6cb/01-german-shepherd-coronavirus-bwtkdt.jpg",
+        "sentence": "Fortunately, they found him and were so relieved to have their beloved dog back home."
+    }
+]
+  // axios.post('http://127.0.0.1:5000/get_pages', prompt)
+  //   .then(response => {
+  //    setPages(response.data);
+  //     // you can now use the pages array in your react component
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  // });
 
   return (
     <Box>
@@ -81,11 +108,12 @@ const Reply: React.FC<ReplyData> = ({ prompt, reply, images }) => {
           />
         </Flex>
       </Flex>
-      <HTMLFlipBook width={300} height={500}>
+  
+      <HTMLFlipBook className='flipbook' width={300} height={500}>
         {pages.map((page, i) => (
-          <div key={i}>
-            <Text>{page.sentence}</Text>
-            <Image src={page.image} h="200px" w="auto" />
+          <div className='page' key={i}>
+            <Image src={page.image} h="280" w="auto" />
+            <Text className="pp">{page.sentence}</Text>
           </div>
         ))}
       </HTMLFlipBook>        

@@ -5,6 +5,7 @@ import Intro from "../components/Intro";
 import PromptInput from "../components/PromptInput";
 import Replies from "../components/Replies";
 
+
 const Home: NextPage = () => {
   return (
     <>

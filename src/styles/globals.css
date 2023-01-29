@@ -11,3 +11,22 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.flipbook{
+  background-color: inherit;
+}
+
+.page{
+  border-radius: 10px;
+  background-image:url(https://i.imgur.com/z57kxZh.png);
+  padding: 10px;  
+}
+.page img{
+  box-shadow: 2px solid;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.pp{
+
+}
